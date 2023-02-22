@@ -208,7 +208,9 @@
 		return 7
 	return FALSE
 
+/* Terra: Unused
 /proc/forbidden_varedit_object_types()
  	return list(
 		/datum/admins
 	)
+*/

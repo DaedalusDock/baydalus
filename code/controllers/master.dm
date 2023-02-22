@@ -170,7 +170,7 @@ var/global/datum/controller/master/Master = new
 
 // Please don't stuff random bullshit here,
 // 	Make a subsystem, give it the SS_NO_FIRE flag, and do your work in it's Initialize()
-/datum/controller/master/Initialize(delay, init_sss)
+/datum/controller/master/Initialize(delay, init_sss, tgs_prime)
 	set waitfor = FALSE
 	var/start_uptime = Uptime()
 
@@ -212,6 +212,9 @@ var/global/datum/controller/master/Master = new
 #else
 	world.sleep_offline = TRUE
 #endif
+	if(tgs_prime)
+		world.TgsInitializationComplete()
+
 	Master.StartProcessing(0)
 
 /datum/controller/master/proc/SetRunLevel(new_runlevel)

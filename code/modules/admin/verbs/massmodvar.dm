@@ -27,6 +27,9 @@
 
 	var/list/locked = list("vars", "key", "ckey", "client")
 
+	if(O.IsProtected())
+		to_chat(usr, SPAN_WARNING("It is forbidden to edit this object's variables.</span>"))
+		return //This was actually missing in Terra's original PR, Exploit potential!
 	for(var/p in forbidden_varedit_object_types())
 		if( istype(O,p) )
 			to_chat(usr, SPAN_WARNING("It is forbidden to edit this object's variables."))

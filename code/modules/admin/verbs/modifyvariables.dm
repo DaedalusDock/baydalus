@@ -327,6 +327,9 @@
 /client/proc/modify_variables(atom/O, param_var_name = null, autodetect_class = 0)
 	if(!check_rights(R_VAREDIT))	return
 
+	if(O.IsProtected())
+		to_chat(usr, SPAN_DANGER("It is forbidden to edit this object's variables.</span>"))
+		return
 	for(var/p in forbidden_varedit_object_types())
 		if( istype(O,p) )
 			to_chat(usr, SPAN_DANGER("It is forbidden to edit this object's variables."))
