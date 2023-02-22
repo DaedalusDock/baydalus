@@ -522,6 +522,7 @@ GLOBAL_VAR_INIT(world_topic_last, world.timeofday)
 		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
 
 	GLOB.world_qdel_log = file("[GLOB.log_directory]/qdel.log")
+	global.diary = file("[GLOB.log_directory]/diary.log") //This is so shit, this is so old, why have you never touched logging, who hurt you?
 	to_file(GLOB.world_qdel_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
 
 

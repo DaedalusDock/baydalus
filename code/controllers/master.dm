@@ -66,8 +66,7 @@ var/global/datum/controller/master/Master = new
 
 /datum/controller/master/New()
 	Uptime() //Uptime as close to boot as possible to set its statics
-	if (!global.diary)
-		global.diary = file("data/logs/[time2text(world.timeofday, "YYYY/MM/DD", -world.timezone)].log")
+	//There is NO reason for the diary to initialize here.
 	if (!config)
 		config = new
 		world.fps = config.fps
