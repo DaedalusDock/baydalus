@@ -47,6 +47,8 @@
 	icon_state = initial(icon_state)
 
 	// Connecting multiple computers in a row
+	// Yeah no this is ugly as sin, thanks.
+	/*
 	if(initial(icon_state) == "computer")
 		var/append_string = ""
 		var/left = turn(dir, 90)
@@ -60,7 +62,7 @@
 		if(RC && RC.dir == dir && initial(RC.icon_state) == "computer")
 			append_string += "_R"
 		icon_state = "computer[append_string]"
-
+	*/
 
 	if(reason_broken & MACHINE_BROKEN_NO_PARTS)
 		set_light(0)
