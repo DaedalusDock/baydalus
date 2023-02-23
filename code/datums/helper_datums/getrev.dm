@@ -7,22 +7,31 @@ var/global/datum/getrev/revdata = new()
 	var/showinfo
 
 /datum/getrev/New()
-	var/list/head_branch = file2list(".git/HEAD", "\n")
-	if(length(head_branch))
-		branch = copytext(head_branch[1], 17)
+	var/datum/tgs_revision_information/tgs_revinfo = world.TgsRevision() //If we have a TGS connection, we'll be passed a TGS revdata to parse
+	if(tgs_revinfo)
+		revision = tgs_revinfo.origin_commit //Always safe.
+		if(tgs_revinfo.origin_commit == tgs_revinfo.commit)
+			//No TM
+		else //Modified, Inform.
+			branch = "TESTMERGE//[tgs_revinfo.commit]"
+		date = tgs_revinfo.timestamp
+	else
+		var/list/head_branch = file2list(".git/HEAD", "\n")
+		if(length(head_branch))
+			branch = copytext(head_branch[1], 17)
 
-	var/list/head_log = file2list(".git/logs/HEAD", "\n")
-	for(var/line=length(head_log), line>=1, line--)
-		if(head_log[line])
-			var/list/last_entry = splittext(head_log[line], " ")
-			if(length(last_entry) < 2)	continue
-			revision = last_entry[2]
-			// Get date/time
-			if(length(last_entry) >= 5)
-				var/unix_time = text2num(last_entry[5])
-				if(unix_time)
-					date = unix2date(unix_time)
-			break
+		var/list/head_log = file2list(".git/logs/HEAD", "\n")
+		for(var/line=length(head_log), line>=1, line--)
+			if(head_log[line])
+				var/list/last_entry = splittext(head_log[line], " ")
+				if(length(last_entry) < 2)	continue
+				revision = last_entry[2]
+				// Get date/time
+				if(length(last_entry) >= 5)
+					var/unix_time = text2num(last_entry[5])
+					if(unix_time)
+						date = unix2date(unix_time)
+				break
 
 	to_world_log("Running revision:")
 	to_world_log(branch)
