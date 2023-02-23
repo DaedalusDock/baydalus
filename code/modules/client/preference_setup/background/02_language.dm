@@ -75,6 +75,8 @@
 
 	for(var/thing in all_languages)
 		var/datum/language/lang = all_languages[thing]
+		if(lang.flags & RESTRICTED)
+			continue //No, not even admins get these, Just to keep the list clean, only whitelisted ones.
 		if(user.has_admin_rights() || (!(lang.flags & RESTRICTED) && (lang.flags & WHITELISTED) && is_alien_whitelisted(user, lang)))
 			allowed_languages[thing] = TRUE
 

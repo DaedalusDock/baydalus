@@ -59,22 +59,27 @@ var/global/list/alien_whitelist = list()
 		return 0
 	if (GLOB.skip_allow_lists)
 		return TRUE
-	if(!config.usealienwhitelist)
-		return 1
+	var/skip_whitelist = !config.usealienwhitelist
+	// if(!config.usealienwhitelist) //Check split to allow restrictions to still work
+	// 	return 1
 	if(check_rights(R_ADMIN, 0, M))
 		return 1
 
 	if(istype(species,/datum/language))
 		var/datum/language/L = species
-		if(!(L.flags & (WHITELISTED|RESTRICTED)))
+		if((L.flags & RESTRICTED))
+			return FALSE //Just blanket deny restricted languages.
+		if(!(L.flags & WHITELISTED))
 			return 1
-		return whitelist_lookup(L.name, M.ckey)
+		return skip_whitelist || whitelist_lookup(L.name, M.ckey)
 
 	if(istype(species,/datum/species))
 		var/datum/species/S = species
-		if(!(S.spawn_flags & (SPECIES_IS_WHITELISTED|SPECIES_IS_RESTRICTED)))
+		if((S.spawn_flags & SPECIES_IS_RESTRICTED))
+			return FALSE //Just blanket deny restricted species
+		if(!(S.spawn_flags & SPECIES_IS_WHITELISTED))
 			return 1
-		return whitelist_lookup(S.get_bodytype(S), M.ckey)
+		return skip_whitelist || whitelist_lookup(S.get_bodytype(S), M.ckey)
 
 	return 0
 
